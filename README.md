@@ -57,6 +57,16 @@ Le prototype utilise Web Audio API pour produire un signal local dont l'intensit
 augmente avec le score. Le son démarre après un clic utilisateur, pour rester
 compatible avec les restrictions audio des navigateurs mobiles.
 
+## Installation sur l'écran d'accueil
+
+Le site contient un manifest et un service worker. Après l'avoir ouvert en HTTPS :
+
+- sur Android : menu du navigateur, puis **Installer l'application** ou **Ajouter à l'écran d'accueil** ;
+- sur iPhone : bouton **Partager**, puis **Sur l'écran d'accueil**.
+
+La caméra et MediaPipe restent utilisables uniquement quand le site est ouvert en
+HTTPS ou sur `localhost`.
+
 ## Seuils
 
 Valeurs de départ : fermeture `0.50`, ouverture `0.35`, moyenne glissante de 6 frames à environ 30 FPS. Un état doit rester confirmé pendant 2 frames avant de changer, pour éviter les basculements rapides. La calibration place le seuil personnel plus près de la mesure réelle des yeux ouverts et conserve une hystérésis.
