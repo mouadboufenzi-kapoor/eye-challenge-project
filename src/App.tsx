@@ -8,9 +8,11 @@ import { CalibrationPanel } from './ui/CalibrationPanel'
 import { DebugPanel } from './ui/DebugPanel'
 import { EyeStatusPanel } from './ui/EyeStatusPanel'
 import { GameStatusPanel } from './ui/GameStatusPanel'
+import { RulesScreen } from './ui/RulesScreen'
+import { StartScreen } from './ui/StartScreen'
 import './style.css'
 
-type Phase = 'idle' | 'starting' | 'close' | 'open' | 'ready' | 'error'
+type Phase = 'start' | 'rules' | 'idle' | 'starting' | 'close' | 'open' | 'ready' | 'error'
 
 const CALIBRATION_MS = 2000
 const initialGameState: GameState = {
@@ -42,7 +44,7 @@ function App() {
   const calibrationRef = useRef({ open: 0, closed: 0 })
   const timerRef = useRef<number | null>(null)
   const debug = useMemo(() => new URLSearchParams(window.location.search).get('debug') === '1', [])
-  const [phase, setPhase] = useState<Phase>('idle')
+  const [phase, setPhase] = useState<Phase>('start')
   const [remaining, setRemaining] = useState(0)
   const [state, setState] = useState(initialState)
   const [error, setError] = useState('')
@@ -135,6 +137,10 @@ function App() {
     setGameState(initialGameState)
   }
 
+  const startFlow = () => setPhase('rules')
+  const continueToCamera = () => setPhase('idle')
+  const returnToStart = () => setPhase('start')
+
   return (
     <main>
       <video ref={videoRef} className="hidden-video" autoPlay muted playsInline />
@@ -144,6 +150,12 @@ function App() {
         <p className="privacy">
           La vidéo reste sur ton téléphone, rien n'est envoyé ni stocké.
         </p>
+
+        {phase === 'start' && <StartScreen onStart={startFlow} />}
+
+        {phase === 'rules' && (
+          <RulesScreen onContinue={continueToCamera} onBack={returnToStart} />
+        )}
 
         {phase === 'idle' && (
           <div className="panel">
