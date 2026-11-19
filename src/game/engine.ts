@@ -68,8 +68,8 @@ export class GameEngine {
     const safeDeltaMs = Math.max(0, deltaMs)
     if (this.phase === 'countdown') {
       this.countdownRemainingMs = Math.max(0, this.countdownRemainingMs - safeDeltaMs)
-      if (this.countdownRemainingMs === 0) this.phase = 'playing'
-      return this.getState()
+      if (this.countdownRemainingMs > 0) return this.getState()
+      this.phase = 'playing'
     }
 
     if (this.phase !== 'playing') return this.getState()

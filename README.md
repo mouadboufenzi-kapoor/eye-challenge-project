@@ -11,6 +11,12 @@ npm run dev
 
 La caméra fonctionne sur `localhost` ou en HTTPS. Pour le debug, ouvrir `/?debug=1`.
 
+Les tests du moteur de jeu se lancent avec :
+
+```bash
+npm test
+```
+
 ## Tester sur un téléphone
 
 1. Déployer le dépôt sur **Cloudflare Pages** (build command `npm run build`, dossier de sortie `dist`) ou lancer un tunnel HTTPS vers le serveur Vite.
