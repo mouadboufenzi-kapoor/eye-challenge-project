@@ -26,6 +26,7 @@ export function applyGrimace(
   const timing = curveTiming(preset.curve)
 
   const portrait = root.querySelector<HTMLElement>('.portrait-base')
+    ?? root
   if (portrait) {
     portrait.animate(
       [

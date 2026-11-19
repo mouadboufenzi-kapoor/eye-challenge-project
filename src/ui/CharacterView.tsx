@@ -2,6 +2,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import type { CharacterDefinition } from '../characters/registry'
 import type { CharacterEyes } from '../game/sequence/random'
+import { grimacePresets } from './animation/presets'
+import { applyGrimace, pickGrimace } from './animation/grimaceEngine'
 
 interface CharacterViewProps {
   eyes: CharacterEyes
@@ -88,6 +90,11 @@ export function CharacterView({
     })
 
     if (opening) {
+      const enabledIds = (Object.keys(grimacePresets) as Array<keyof typeof grimacePresets>)
+        .filter((id) => character.grimaceOverrides?.[id]?.enabled !== false)
+      const presetId = pickGrimace(enabledIds)
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      applyGrimace(root, grimacePresets[presetId], reducedMotion)
       if (half && character.assets.eyesHalf) {
         half.animate(
           [{ opacity: 0 }, { opacity: 1, offset: 0.44 }, { opacity: 0, offset: 1 }],

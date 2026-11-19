@@ -113,6 +113,11 @@ input {
   -webkit-user-drag: none;
 }
 
+.character-figure.poster-character {
+  transform: scale(var(--rhythm-scale, 1)) rotate(var(--character-sway, 0deg));
+  transform-origin: 50% 42%;
+}
+
 .character-layer-closed {
   z-index: 1;
   opacity: 1;
