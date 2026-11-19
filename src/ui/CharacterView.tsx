@@ -1,4 +1,4 @@
-import { FIRST_CHARACTER } from '../characters/catalog'
+import { DEFAULT_CHARACTER } from '../characters/registry'
 import type { CharacterEyes } from '../game/sequence/random'
 
 interface CharacterViewProps {
@@ -7,16 +7,24 @@ interface CharacterViewProps {
 }
 
 export function CharacterView({ eyes, reaction = 'normal' }: CharacterViewProps) {
+  if (!DEFAULT_CHARACTER) return null
   const source = reaction === 'laugh'
-    ? FIRST_CHARACTER.assets.laugh
+    ? DEFAULT_CHARACTER.assets.laugh
     : eyes === 'open'
-      ? FIRST_CHARACTER.assets.eyesOpen
-      : FIRST_CHARACTER.assets.eyesClosed
+      ? DEFAULT_CHARACTER.assets.eyesOpen
+      : DEFAULT_CHARACTER.assets.eyesClosed
 
   return (
     <figure className="character-figure">
-      <img src={source} alt={FIRST_CHARACTER.name} />
-      <figcaption>{FIRST_CHARACTER.name}</figcaption>
+      <img
+        src={source}
+        alt={DEFAULT_CHARACTER.name}
+        style={{
+          objectFit: DEFAULT_CHARACTER.portrait.fit,
+          objectPosition: DEFAULT_CHARACTER.portrait.position,
+        }}
+      />
+      <figcaption>{DEFAULT_CHARACTER.name}</figcaption>
     </figure>
   )
 }

@@ -1,0 +1,29 @@
+{
+  "id": "tribun",
+  "name": "Le Tribun",
+  "category": "invented",
+  "reaction": "HAHAHA ! Je t'ai eu !",
+  "colors": {
+    "background": "#22252d",
+    "primary": "#a7f3d0",
+    "secondary": "#fcd34d"
+  },
+  "portrait": {
+    "viewBox": [0, 0, 600, 900],
+    "fit": "cover",
+    "position": "50% 24%",
+    "overflow": "180%",
+    "anchorLeftEye": [205, 350],
+    "anchorRightEye": [395, 350],
+    "anchorMouth": [300, 520]
+  },
+  "difficulty": {
+    "openDuration": { "min": 900, "max": 1800 },
+    "closedDuration": { "min": 1200, "max": 2600 }
+  },
+  "grimaceOverrides": {
+    "scare": { "enabled": true },
+    "twitch": { "enabled": true },
+    "bulge": { "enabled": true }
+  }
+}
