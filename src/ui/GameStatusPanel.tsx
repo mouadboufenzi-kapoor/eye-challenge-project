@@ -1,5 +1,6 @@
 import type { GameState } from '../game/engine'
 import { CharacterView } from './CharacterView'
+import { ScoreProgress } from './ScoreProgress'
 
 interface GameStatusPanelProps {
   state: GameState
@@ -18,6 +19,7 @@ export function GameStatusPanel({ state, bestScore, onReset }: GameStatusPanelPr
       )}
       {state.phase === 'playing' && (
         <>
+          <ScoreProgress score={state.score} />
           <CharacterView eyes={state.characterEyes} />
           <h2>
             {state.characterEyes === 'open'
