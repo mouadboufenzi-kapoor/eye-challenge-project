@@ -10,7 +10,7 @@ export interface GameConfig {
 }
 
 export const DEFAULT_GAME_CONFIG: GameConfig = {
-  countdownMs: 3000,
+  countdownMs: 5000,
   lossOverlapToleranceMs: 150,
   scoreToWin: 100,
   scoreIncreasePerSecond: 20,

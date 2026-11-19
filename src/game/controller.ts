@@ -12,6 +12,7 @@ export interface GameController {
   beginCalibration(): void
   finishCalibration(): void
   reset(): void
+  setCountdownBlocked(blocked: boolean): void
   getState(): GameState
   onUpdate(callback: (state: GameState) => void): void
 }
@@ -25,6 +26,7 @@ export class EyeGameController implements GameController {
   private lastTimestamp: number | null = null
   private frameId: number | null = null
   private running = false
+  private countdownBlocked = false
 
   constructor(
     engine: GameEngine,
@@ -68,6 +70,10 @@ export class EyeGameController implements GameController {
     this.emit()
   }
 
+  setCountdownBlocked(blocked: boolean): void {
+    this.countdownBlocked = blocked
+  }
+
   getState(): GameState {
     return this.engine.getState()
   }
@@ -87,6 +93,12 @@ export class EyeGameController implements GameController {
 
   private update(timestamp: number): void {
     if (!this.running) return
+    if (this.engine.getState().phase === 'countdown' && this.countdownBlocked) {
+      this.lastTimestamp = timestamp
+      this.emit()
+      this.scheduleNextFrame()
+      return
+    }
     const deltaMs = this.lastTimestamp === null ? 0 : Math.max(0, timestamp - this.lastTimestamp)
     this.lastTimestamp = timestamp
     this.engine.tick(deltaMs, { eyesOpen: this.latestEyesOpen })
