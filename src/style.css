@@ -33,6 +33,9 @@ h1 { margin: .4rem 0 .75rem; font-size: clamp(2rem, 10vw, 3.2rem); line-height: 
 .screen-actions { display: flex; justify-content: flex-end; gap: .75rem; }
 .screen-actions button { margin-top: 1rem; }
 .secondary-button { color: #f4f4f5; background: #30333b; }
+.camera-intro-panel { text-align: left; }
+.camera-intro-panel h2 { margin-top: 0; text-align: center; }
+.camera-note { font-size: .9rem; }
 .hidden-video { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .calibration h2 { margin: .75rem 0 .25rem; font-size: 1.75rem; }
 .calibration strong { display: block; margin: .6rem; color: #a7f3d0; font-size: 4rem; line-height: 1; }

@@ -10,9 +10,10 @@ import { EyeStatusPanel } from './ui/EyeStatusPanel'
 import { GameStatusPanel } from './ui/GameStatusPanel'
 import { RulesScreen } from './ui/RulesScreen'
 import { StartScreen } from './ui/StartScreen'
+import { CameraIntroScreen } from './ui/CameraIntroScreen'
 import './style.css'
 
-type Phase = 'start' | 'rules' | 'idle' | 'starting' | 'close' | 'open' | 'ready' | 'error'
+type Phase = 'start' | 'rules' | 'camera' | 'idle' | 'starting' | 'close' | 'open' | 'ready' | 'error'
 
 const CALIBRATION_MS = 2000
 const initialGameState: GameState = {
@@ -138,8 +139,9 @@ function App() {
   }
 
   const startFlow = () => setPhase('rules')
-  const continueToCamera = () => setPhase('idle')
+  const continueToCamera = () => setPhase('camera')
   const returnToStart = () => setPhase('start')
+  const returnToRules = () => setPhase('rules')
 
   return (
     <main>
@@ -155,6 +157,10 @@ function App() {
 
         {phase === 'rules' && (
           <RulesScreen onContinue={continueToCamera} onBack={returnToStart} />
+        )}
+
+        {phase === 'camera' && (
+          <CameraIntroScreen onAllow={() => setPhase('idle')} onBack={returnToRules} />
         )}
 
         {phase === 'idle' && (
