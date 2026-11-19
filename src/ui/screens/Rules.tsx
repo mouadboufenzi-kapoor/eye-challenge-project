@@ -3,6 +3,8 @@ import { CharacterView } from '../CharacterView'
 import { Button } from '../components/Button'
 import { Popup } from '../components/Popup'
 import { strings } from '../strings.fr'
+import { CameraOff } from 'lucide-react'
+import { EyeIcon } from '../components/EyeIcon'
 
 interface RulesProps {
   characterIndex: number
@@ -18,18 +20,25 @@ export function Rules({ characterIndex, error, loading, onStart, onRetry }: Rule
   return (
     <main className="poster-screen rules-screen">
       <CharacterView character={character} eyes="closed" className="poster-character" />
-      <Popup title={strings.rulesTitle}>
+      <Popup>
         {error ? (
           <>
-            <p>{error}</p>
+            <CameraOff className="camera-off-icon" size={42} strokeWidth={2.4} />
+            <h2 className="camera-error-title">{strings.cameraRefusedTitle}</h2>
+            <p>{strings.cameraRefusedText}</p>
             <Button onClick={onRetry}>{strings.retry}</Button>
           </>
         ) : (
           <>
+            <div className="gold-rule-pill">RÈGLE D’OR</div>
+            <h2 className="ui-popup-title rules-popup-title">
+              <span>NE CROISE PAS</span>
+              <span>SON REGARD !</span>
+            </h2>
             <div className="rules-versus">
-              <span>LUI</span>
+              <div><EyeIcon /><strong>LUI</strong></div>
               <strong>+</strong>
-              <span>TOI</span>
+              <div><EyeIcon /><strong>TOI</strong></div>
               <strong>=</strong>
               <span className="rules-lost">{strings.rulesResult}</span>
             </div>

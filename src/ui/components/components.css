@@ -60,8 +60,8 @@
   inset: 0;
   z-index: 20;
   display: grid;
-  place-items: end center;
-  padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+  place-items: start center;
+  padding: 210px 24px 20px;
   background: rgba(27, 26, 31, 0.72);
 }
 

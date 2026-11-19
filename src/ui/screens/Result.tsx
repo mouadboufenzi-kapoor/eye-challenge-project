@@ -1,8 +1,9 @@
 import type { ResultKind } from '../flow'
-import { DEFAULT_CHARACTER } from '../../characters/registry'
+import type { CharacterDefinition } from '../../characters/registry'
 import { CharacterView } from '../CharacterView'
 import { Button } from '../components/Button'
 import { strings } from '../strings.fr'
+import { RotateCcw, Share2, Trophy } from 'lucide-react'
 
 interface ResultProps {
   kind: ResultKind
@@ -11,10 +12,10 @@ interface ResultProps {
   onReplay: () => void
   onShare: () => void
   onHome: () => void
+  character: CharacterDefinition
 }
 
-export function Result({ kind, score, record, onReplay, onShare, onHome }: ResultProps) {
-  const character = DEFAULT_CHARACTER
+export function Result({ kind, score, record, onReplay, onShare, onHome, character }: ResultProps) {
   if (!character) return null
   const lost = kind === 'lost'
   return (
@@ -22,21 +23,35 @@ export function Result({ kind, score, record, onReplay, onShare, onHome }: Resul
       <CharacterView
         character={character}
         eyes="closed"
-        reaction={lost ? 'laugh' : 'normal'}
+        reaction={lost ? 'laugh' : 'win'}
         className="poster-character"
       />
-      {lost && <div className="result-bubble">{strings.loseReaction}</div>}
-      {!lost && <div className="result-bubble">{strings.winReaction}</div>}
+      {lost ? (
+        <div className="result-bubble"><span>HAHAHA !</span><strong>JE T’AI EU !</strong></div>
+      ) : (
+        <div className="result-bubble win-bubble"><span>BRAVO !</span><strong>TU M’AS BATTU…</strong></div>
+      )}
       <section className="result-panel">
-        <h1>{lost ? strings.lost : strings.won}</h1>
+        <p className="result-kicker">{lost ? strings.heldOut : strings.won}</p>
+        <p className="result-time">{Math.round(score)} S</p>
         <div className="result-scores">
-          <div><span>{strings.score}</span><strong>{Math.round(score)} {strings.points}</strong></div>
-          <div><span>{strings.record}</span><strong>{Math.round(record)} {strings.points}</strong></div>
+          <div className="result-record">
+            <Trophy size={16} strokeWidth={2.4} />
+            <span>{strings.record} : {Math.round(record)} s</span>
+          </div>
         </div>
         <div className="result-actions">
-          <Button onClick={onReplay}>{strings.replay}</Button>
-          <Button tone="cream" onClick={onShare}>{strings.share}</Button>
-          <Button tone="ink" onClick={onHome}>{strings.otherCharacter}</Button>
+          <Button className="replay-button" onClick={onReplay}>
+            <RotateCcw size={22} strokeWidth={2.5} />
+            {strings.replay}
+          </Button>
+          <Button tone="cream" className="secondary-action" onClick={onShare}>
+            <Share2 size={19} strokeWidth={2.4} />
+            {strings.share}
+          </Button>
+          <Button tone="cream" className="secondary-action" onClick={onHome}>
+            {strings.otherCharacter}
+          </Button>
         </div>
       </section>
     </main>

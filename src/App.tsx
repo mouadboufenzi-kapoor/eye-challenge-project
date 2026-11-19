@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { MediaPipeEyeTracker } from './input/mediapipe'
 import type { EyeState } from './input/eyeTracker'
 import { readBlinkCalibration, saveBlinkCalibration } from './input/calibration'
@@ -22,6 +22,8 @@ import { Countdown } from './ui/screens/Countdown'
 import { Playing } from './ui/screens/Playing'
 import { Result } from './ui/screens/Result'
 import { strings } from './ui/strings.fr'
+import { characters, DEFAULT_CHARACTER } from './characters/registry'
+import { DebugOverlay } from './ui/components/DebugOverlay'
 
 const initialEyeState: EyeState = {
   leftClosed: false,
@@ -51,6 +53,7 @@ function App() {
   const blinkSamplesRef = useRef<number[]>([])
   const flowRef = useRef<UIFlowState>(INITIAL_UI_FLOW)
   const calibrationAppliedRef = useRef(false)
+  const goTimerRef = useRef<number | null>(null)
 
   const [flow, setFlow] = useState(INITIAL_UI_FLOW)
   const [selectedCharacter, setSelectedCharacter] = useState(0)
@@ -60,6 +63,10 @@ function App() {
   const [cameraError, setCameraError] = useState<string | null>(null)
   const [cameraLoading, setCameraLoading] = useState(false)
   const [countdownBlocked, setCountdownBlocked] = useState(false)
+  const debug = useMemo(
+    () => new URLSearchParams(window.location.search).get('debug') === '1',
+    [],
+  )
 
   useEffect(() => {
     if (!videoRef.current) return
@@ -68,6 +75,7 @@ function App() {
     void tracker.preload?.().catch(() => undefined)
 
     return () => {
+      if (goTimerRef.current) window.clearTimeout(goTimerRef.current)
       controllerRef.current?.stop()
       tracker.stop()
       audioRef.current.stop()
@@ -112,7 +120,10 @@ function App() {
     }
     calibrationAppliedRef.current = true
     setCountdownBlocked(false)
-    setFlow((current) => transitionToPlaying(current))
+    if (goTimerRef.current) window.clearTimeout(goTimerRef.current)
+    goTimerRef.current = window.setTimeout(() => {
+      setFlow((current) => transitionToPlaying(current))
+    }, 600)
   }, [gameState.phase])
 
   const startCameraAndAudio = () => {
@@ -190,10 +201,12 @@ function App() {
     await navigator.clipboard?.writeText(text)
   }
 
-  const countdownValue = Math.max(
-    1,
-    Math.ceil(gameState.countdownRemainingMs / 1000),
-  )
+  const countdownValue =
+    gameState.countdownRemainingMs <= 0
+      ? 0
+      : Math.max(1, Math.ceil(gameState.countdownRemainingMs / 1000))
+
+  const activeCharacter = characters[selectedCharacter] ?? DEFAULT_CHARACTER
 
   return (
     <>
@@ -216,10 +229,10 @@ function App() {
         />
       )}
       {flow.screen === 'countdown' && (
-        <Countdown value={countdownValue} blocked={countdownBlocked} />
+        <Countdown value={countdownValue} blocked={countdownBlocked} character={activeCharacter} />
       )}
       {flow.screen === 'playing' && (
-        <Playing eyeState={eyeState} gameState={gameState} />
+        <Playing eyeState={eyeState} gameState={gameState} record={record} character={activeCharacter} />
       )}
       {flow.screen === 'result' && (
         <Result
@@ -229,8 +242,10 @@ function App() {
           onReplay={replay}
           onShare={() => void share()}
           onHome={goHome}
+          character={activeCharacter}
         />
       )}
+      {debug && activeCharacter && <DebugOverlay character={activeCharacter} />}
     </>
   )
 }
