@@ -32,6 +32,7 @@ export function Playing({ eyeState, gameState }: PlayingProps) {
         character={character}
         eyes={gameState.characterEyes}
         className="poster-character"
+        audioIntensity={gameState.score / DEFAULT_GAME_CONFIG.scoreToWin}
       />
       <Pill tone={eyesClosed ? 'green' : 'yellow'}>
         {eyesClosed ? strings.eyesClosed : strings.eyesOpen}
