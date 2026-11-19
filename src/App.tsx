@@ -8,6 +8,7 @@ import { CalibrationPanel } from './ui/CalibrationPanel'
 import { DebugPanel } from './ui/DebugPanel'
 import { EyeStatusPanel } from './ui/EyeStatusPanel'
 import { GameStatusPanel } from './ui/GameStatusPanel'
+import { WebAudioGameAudio } from './audio/gameAudio'
 import { RulesScreen } from './ui/RulesScreen'
 import { StartScreen } from './ui/StartScreen'
 import { CameraIntroScreen } from './ui/CameraIntroScreen'
@@ -39,6 +40,7 @@ function App() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const trackerRef = useRef<MediaPipeEyeTracker | null>(null)
   const gameControllerRef = useRef<EyeGameController | null>(null)
+  const gameAudioRef = useRef(new WebAudioGameAudio())
   const samplesRef = useRef<number[]>([])
   const faceSamplesRef = useRef(0)
   const stateRef = useRef(initialState)
@@ -57,6 +59,7 @@ function App() {
     return () => {
       if (timerRef.current) window.clearInterval(timerRef.current)
       gameControllerRef.current?.stop()
+      gameAudioRef.current.stop()
     }
   }, [])
 
@@ -73,6 +76,15 @@ function App() {
     if (gameState.score <= bestScore) return
     setBestScore(saveBestScore(gameState.score))
   }, [bestScore, gameState.phase, gameState.score])
+
+  useEffect(() => {
+    if (gameState.phase === 'playing') {
+      gameAudioRef.current.setIntensity(gameState.score, 100)
+    }
+    if (gameState.phase === 'lost' || gameState.phase === 'won' || gameState.phase === 'idle') {
+      gameAudioRef.current.stop()
+    }
+  }, [gameState.phase, gameState.score])
 
   const start = async () => {
     if (!videoRef.current) return
@@ -130,6 +142,7 @@ function App() {
   }
 
   const startGame = () => {
+    gameAudioRef.current.start()
     gameControllerRef.current?.beginCalibration()
     gameControllerRef.current?.finishCalibration()
   }
