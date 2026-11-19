@@ -96,4 +96,18 @@ describe('EyeGameController', () => {
     expect(controller.getState().score).toBe(0)
     expect(tracker.stopped).toBe(true)
   })
+
+  it('resets the engine through the controller', () => {
+    const tracker = new FakeTracker()
+    const scheduler = new FakeScheduler()
+    const engine = new GameEngine()
+    const controller = new EyeGameController(engine, tracker, scheduler)
+
+    controller.beginCalibration()
+    controller.finishCalibration()
+    controller.reset()
+
+    expect(controller.getState().phase).toBe('idle')
+    expect(controller.getState().score).toBe(0)
+  })
 })
