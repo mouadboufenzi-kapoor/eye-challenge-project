@@ -1,11 +1,21 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { MediaPipeEyeTracker } from './input/mediapipe'
 import type { EyeState } from './input/eyeTracker'
+import { EyeGameController } from './game/controller'
+import { GameEngine, type GameState } from './game/engine'
 import './style.css'
 
 type Phase = 'idle' | 'starting' | 'close' | 'open' | 'ready' | 'error'
 
 const CALIBRATION_MS = 2000
+const initialGameState: GameState = {
+  phase: 'idle',
+  characterEyes: 'closed',
+  score: 0,
+  countdownRemainingMs: 0,
+  elapsedMs: 0,
+  lossOverlapMs: 0,
+}
 const initialState: EyeState = {
   leftClosed: false,
   rightClosed: false,
@@ -20,6 +30,7 @@ const initialState: EyeState = {
 function App() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const trackerRef = useRef<MediaPipeEyeTracker | null>(null)
+  const gameControllerRef = useRef<EyeGameController | null>(null)
   const samplesRef = useRef<number[]>([])
   const faceSamplesRef = useRef(0)
   const stateRef = useRef(initialState)
@@ -31,11 +42,12 @@ function App() {
   const [state, setState] = useState(initialState)
   const [error, setError] = useState('')
   const [calibration, setCalibration] = useState({ open: 0, closed: 0 })
+  const [gameState, setGameState] = useState(initialGameState)
 
   useEffect(() => {
     return () => {
       if (timerRef.current) window.clearInterval(timerRef.current)
-      trackerRef.current?.stop()
+      gameControllerRef.current?.stop()
     }
   }, [])
 
@@ -54,13 +66,16 @@ function App() {
     const tracker = new MediaPipeEyeTracker(videoRef.current)
     tracker.onUpdate(setState)
     trackerRef.current = tracker
+    const gameController = new EyeGameController(new GameEngine(), tracker)
+    gameController.onUpdate(setGameState)
+    gameControllerRef.current = gameController
     try {
-      await tracker.start()
+      await gameController.start()
       runCalibration('close')
     } catch (cause) {
       setPhase('error')
       setError(errorMessage(cause))
-      tracker.stop()
+      gameController.stop()
     }
   }
 
@@ -101,6 +116,14 @@ function App() {
 
   const bothClosed = state.leftClosed && state.rightClosed
   const statusText = phase === 'ready' ? (bothClosed ? 'FERMÉS' : 'OUVERTS') : ''
+  const startGame = () => {
+    gameControllerRef.current?.beginCalibration()
+    gameControllerRef.current?.finishCalibration()
+  }
+  const resetGame = () => {
+    gameControllerRef.current?.reset()
+    setGameState(initialGameState)
+  }
 
   return (
     <main>
@@ -141,6 +164,38 @@ function App() {
             </p>
             {!state.faceDetected && (
               <p className="hint">Place ton visage face à la caméra et améliore la lumière.</p>
+            )}
+            {gameState.phase === 'idle' && (
+              <button onClick={startGame}>Lancer le test de jeu</button>
+            )}
+          </div>
+        )}
+
+        {gameState.phase !== 'idle' && (
+          <div className="panel game-panel">
+            <span className="step">Test du moteur de jeu</span>
+            {gameState.phase === 'countdown' && (
+              <h2>Départ dans {Math.ceil(gameState.countdownRemainingMs / 1000)}</h2>
+            )}
+            {gameState.phase === 'playing' && (
+              <>
+                <h2>{gameState.characterEyes === 'open' ? 'Le personnage regarde' : 'Le personnage ferme les yeux'}</h2>
+                <p className="score">Score : {Math.round(gameState.score)}</p>
+              </>
+            )}
+            {gameState.phase === 'lost' && (
+              <>
+                <h2>Perdu</h2>
+                <p className="score">Score : {Math.round(gameState.score)}</p>
+                <button onClick={resetGame}>Recommencer</button>
+              </>
+            )}
+            {gameState.phase === 'won' && (
+              <>
+                <h2>Gagné</h2>
+                <p className="score">Score : {Math.round(gameState.score)}</p>
+                <button onClick={resetGame}>Recommencer</button>
+              </>
             )}
           </div>
         )}

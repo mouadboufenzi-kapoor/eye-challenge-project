@@ -11,6 +11,7 @@ export interface GameController {
   stop(): void
   beginCalibration(): void
   finishCalibration(): void
+  reset(): void
   getState(): GameState
   onUpdate(callback: (state: GameState) => void): void
 }
@@ -59,6 +60,11 @@ export class EyeGameController implements GameController {
 
   finishCalibration(): void {
     this.engine.finishCalibration()
+    this.emit()
+  }
+
+  reset(): void {
+    this.engine.reset()
     this.emit()
   }
 

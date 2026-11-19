@@ -39,6 +39,9 @@ h1 { margin: .4rem 0 .75rem; font-size: clamp(2rem, 10vw, 3.2rem); line-height: 
 .dot { width: .65rem; height: .65rem; border-radius: 50%; background: #f87171; }
 .dot.detected { background: #a7f3d0; }
 .hint { margin-bottom: 0; font-size: .9rem; }
+.game-panel { margin-top: 1rem; }
+.game-panel h2 { margin: .75rem 0; font-size: 1.35rem; }
+.score { margin: .5rem 0 0; color: #a7f3d0 !important; font-size: 1.5rem; font-weight: 800; }
 .error-panel { border-color: #7f1d1d; }
 .error-panel h2 { margin-top: 0; }
 .debug { margin-top: 1rem; padding: .8rem 1rem; border: 1px solid #2d3038; border-radius: 1rem; color: #a1a1aa; text-align: left; font: .8rem ui-monospace, SFMono-Regular, Consolas, monospace; }
