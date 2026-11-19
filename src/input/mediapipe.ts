@@ -101,7 +101,11 @@ export class MediaPipeEyeTracker implements EyeTracker {
     cancelAnimationFrame(this.animationFrame)
     this.stream?.getTracks().forEach((track) => track.stop())
     this.stream = null
-    this.landmarker?.close()
+    if (this.landmarker) {
+      this.landmarker.close()
+    } else {
+      void this.landmarkerPromise?.then((landmarker) => landmarker.close())
+    }
     this.landmarker = null
     this.video.srcObject = null
     this.leftHistory = []

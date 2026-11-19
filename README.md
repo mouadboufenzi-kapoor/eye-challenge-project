@@ -57,6 +57,16 @@ Le prototype utilise Web Audio API pour produire un signal local dont l'intensit
 augmente avec le score. Le son démarre après un clic utilisateur, pour rester
 compatible avec les restrictions audio des navigateurs mobiles.
 
+## Architecture UI
+
+- `src/ui/theme/` : couleurs, rayons, ombres et typographies.
+- `src/ui/components/` : boutons, pastilles, popups, barre de progression et grands chiffres.
+- `src/ui/screens/` : écrans de home, règles, décompte, partie et résultat.
+- `src/ui/flow.ts` : transitions de l'interface.
+- `src/ui/animation/` : presets de grimaces et moteur d'animation.
+- `src/ui/strings.fr.ts` : textes français prêts pour une i18n future.
+- `src/characters/<id>/` : assets, métadonnées, cadrage et surcharges de personnage.
+
 ## Installation sur l'écran d'accueil
 
 Le site contient un manifest et un service worker. Après l'avoir ouvert en HTTPS :

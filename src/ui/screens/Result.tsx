@@ -26,6 +26,7 @@ export function Result({ kind, score, record, onReplay, onShare, onHome }: Resul
         className="poster-character"
       />
       {lost && <div className="result-bubble">{strings.loseReaction}</div>}
+      {!lost && <div className="result-bubble">{strings.winReaction}</div>}
       <section className="result-panel">
         <h1>{lost ? strings.lost : strings.won}</h1>
         <div className="result-scores">
