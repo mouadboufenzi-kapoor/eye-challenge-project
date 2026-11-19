@@ -4,6 +4,7 @@ import {
   type FaceLandmarkerResult,
 } from '@mediapipe/tasks-vision'
 import type { EyeState, EyeTracker } from './eyeTracker'
+import { cameraErrorCode } from './cameraErrors'
 
 export interface EyeTrackerConfig {
   width: number
@@ -79,7 +80,7 @@ export class MediaPipeEyeTracker implements EyeTracker {
       })
     } catch (error) {
       console.error('Unable to access the camera', error)
-      throw new Error('CAMERA_DENIED')
+      throw new Error(cameraErrorCode(error))
     }
 
     this.video.srcObject = this.stream

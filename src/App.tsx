@@ -222,6 +222,12 @@ function errorMessage(cause: unknown): string {
   if (cause instanceof Error && cause.message === 'CAMERA_DENIED') {
     return 'Accès caméra refusé. Autorise la caméra dans les réglages du navigateur, puis réessaie.'
   }
+  if (cause instanceof Error && cause.message === 'CAMERA_UNAVAILABLE') {
+    return 'Aucune caméra utilisable n’a été trouvée. Ferme les autres applications qui utilisent la caméra, puis réessaie.'
+  }
+  if (cause instanceof Error && cause.message === 'CAMERA_CONSTRAINTS') {
+    return 'La caméra de cet appareil ne prend pas en charge les réglages demandés. Essaie avec un navigateur récent.'
+  }
   if (cause instanceof Error && cause.message === 'CAMERA_UNSUPPORTED') {
     return 'Ce navigateur ne permet pas l’accès à la caméra. Essaie sur un navigateur récent en HTTPS.'
   }
