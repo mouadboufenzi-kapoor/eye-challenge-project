@@ -1,0 +1,43 @@
+{
+  "id": "trump",
+  "name": "TRUMP",
+  "category": "parody",
+  "reaction": "HAHAHA ! JE T'AI EU !",
+  "colors": {
+    "background": "#3B3F44",
+    "primary": "#F3E9D8",
+    "secondary": "#FFC93C"
+  },
+  "portrait": {
+    "viewBox": [0, 0, 784, 1168],
+    "fit": "cover",
+    "positionX": 50,
+    "positionY": 30,
+    "zoom": 1.02,
+    "overflow": "180%",
+    "anchorLeftEye": [205, 350],
+    "anchorRightEye": [395, 350],
+    "anchorMouth": [300, 520]
+  },
+  "eyeRegion": { "x": 0.16, "y": 0.28, "w": 0.68, "h": 0.24, "feather": 0.10 },
+  "eyeAnchors": {
+    "left": { "x": 0.342, "y": 0.389 },
+    "right": { "x": 0.658, "y": 0.389 }
+  },
+  "mouth": { "x": 0.5, "y": 0.67 },
+  "align": {
+    "eyes-open.jpg": { "dx": 0, "dy": 0, "scale": 1, "rotate": 0 },
+    "eyes-closed.jpg": { "dx": 0, "dy": 0, "scale": 1, "rotate": 0 },
+    "laugh.jpg": { "dx": 0, "dy": 0, "scale": 1, "rotate": 0 }
+  },
+  "transition": { "mode": "mask", "durationOpenMs": 90, "durationCloseMs": 70, "easing": "ease-out", "lid": true },
+  "difficulty": {
+    "openDuration": { "min": 900, "max": 1800 },
+    "closedDuration": { "min": 1200, "max": 2600 }
+  },
+  "grimaceOverrides": {
+    "scare": { "enabled": true },
+    "twitch": { "enabled": true },
+    "bulge": { "enabled": true }
+  }
+}
