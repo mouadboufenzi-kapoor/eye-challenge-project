@@ -1,4 +1,4 @@
-const CACHE_NAME = 'eye-challenge-v1'
+const CACHE_NAME = 'eye-challenge-v2'
 const APP_SHELL = [
   '/',
   '/manifest.webmanifest',
@@ -27,14 +27,14 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return
 
   event.respondWith(
-    caches.match(event.request).then((cached) =>
-      cached ?? fetch(event.request).then((response) => {
+    fetch(event.request)
+      .then((response) => {
         if (new URL(event.request.url).origin === self.location.origin) {
           const copy = response.clone()
           void caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy))
         }
         return response
-      }),
-    ),
+      })
+      .catch(() => caches.match(event.request)),
   )
 })
