@@ -3,6 +3,7 @@ import { MediaPipeEyeTracker } from './input/mediapipe'
 import type { EyeState } from './input/eyeTracker'
 import { EyeGameController } from './game/controller'
 import { GameEngine, type GameState } from './game/engine'
+import { readBestScore, saveBestScore } from './storage/bestScore'
 import './style.css'
 
 type Phase = 'idle' | 'starting' | 'close' | 'open' | 'ready' | 'error'
@@ -43,6 +44,7 @@ function App() {
   const [error, setError] = useState('')
   const [calibration, setCalibration] = useState({ open: 0, closed: 0 })
   const [gameState, setGameState] = useState(initialGameState)
+  const [bestScore, setBestScore] = useState(() => readBestScore())
 
   useEffect(() => {
     return () => {
@@ -58,6 +60,12 @@ function App() {
   useEffect(() => {
     calibrationRef.current = calibration
   }, [calibration])
+
+  useEffect(() => {
+    if (gameState.phase !== 'won') return
+    if (gameState.score <= bestScore) return
+    setBestScore(saveBestScore(gameState.score))
+  }, [bestScore, gameState.phase, gameState.score])
 
   const start = async () => {
     if (!videoRef.current) return
@@ -181,12 +189,14 @@ function App() {
               <>
                 <h2>{gameState.characterEyes === 'open' ? 'Le personnage regarde' : 'Le personnage ferme les yeux'}</h2>
                 <p className="score">Score : {Math.round(gameState.score)}</p>
+                <p className="best-score">Meilleur score : {Math.round(bestScore)}</p>
               </>
             )}
             {gameState.phase === 'lost' && (
               <>
                 <h2>Perdu</h2>
                 <p className="score">Score : {Math.round(gameState.score)}</p>
+                <p className="best-score">Meilleur score : {Math.round(bestScore)}</p>
                 <button onClick={resetGame}>Recommencer</button>
               </>
             )}
@@ -194,6 +204,7 @@ function App() {
               <>
                 <h2>Gagné</h2>
                 <p className="score">Score : {Math.round(gameState.score)}</p>
+                <p className="best-score">Meilleur score : {Math.round(bestScore)}</p>
                 <button onClick={resetGame}>Recommencer</button>
               </>
             )}

@@ -42,6 +42,7 @@ h1 { margin: .4rem 0 .75rem; font-size: clamp(2rem, 10vw, 3.2rem); line-height: 
 .game-panel { margin-top: 1rem; }
 .game-panel h2 { margin: .75rem 0; font-size: 1.35rem; }
 .score { margin: .5rem 0 0; color: #a7f3d0 !important; font-size: 1.5rem; font-weight: 800; }
+.best-score { margin: .35rem 0 1rem !important; color: #a1a1aa !important; font-size: .9rem; }
 .error-panel { border-color: #7f1d1d; }
 .error-panel h2 { margin-top: 0; }
 .debug { margin-top: 1rem; padding: .8rem 1rem; border: 1px solid #2d3038; border-radius: 1rem; color: #a1a1aa; text-align: left; font: .8rem ui-monospace, SFMono-Regular, Consolas, monospace; }

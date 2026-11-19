@@ -29,6 +29,8 @@ injectable pour garder les tests déterministes.
 
 Le modèle `face_landmarker.task` et les fichiers WASM sont versionnés dans `public/`, donc aucun CDN n'est requis au runtime.
 
+Le meilleur score est enregistré uniquement dans le `localStorage` du navigateur.
+
 ## Seuils
 
 Valeurs de départ : fermeture `0.50`, ouverture `0.35`, moyenne glissante de 6 frames à environ 30 FPS. Un état doit rester confirmé pendant 2 frames avant de changer, pour éviter les basculements rapides. La calibration place le seuil personnel plus près de la mesure réelle des yeux ouverts et conserve une hystérésis.
