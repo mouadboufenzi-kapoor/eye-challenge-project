@@ -43,9 +43,9 @@ h1 { margin: .4rem 0 .75rem; font-size: clamp(2rem, 10vw, 3.2rem); line-height: 
 .game-panel h2 { margin: .75rem 0; font-size: 1.35rem; }
 .score { margin: .5rem 0 0; color: #a7f3d0 !important; font-size: 1.5rem; font-weight: 800; }
 .best-score { margin: .35rem 0 1rem !important; color: #a1a1aa !important; font-size: .9rem; }
-.character { display: flex; justify-content: center; gap: 1.5rem; width: 10rem; margin: 0 auto 1rem; padding: 2rem 1rem; border: 1px solid #454852; border-radius: 50%; background: #22252d; }
-.character-eye { display: block; width: 1.25rem; height: 1.25rem; border-radius: 50%; background: #f4f4f5; }
-.character-eye.closed { height: .2rem; margin-top: .55rem; border-radius: 1rem; }
+.character-figure { margin: 1rem auto; }
+.character-figure img { display: block; width: min(100%, 18rem); height: auto; margin: 0 auto; }
+.character-figure figcaption { margin-top: .5rem; color: #a1a1aa; font-size: .85rem; }
 .error-panel { border-color: #7f1d1d; }
 .error-panel h2 { margin-top: 0; }
 .debug { margin-top: 1rem; padding: .8rem 1rem; border: 1px solid #2d3038; border-radius: 1rem; color: #a1a1aa; text-align: left; font: .8rem ui-monospace, SFMono-Regular, Consolas, monospace; }

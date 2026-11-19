@@ -1,0 +1,11 @@
+{
+  "id": "first-character",
+  "name": "Le Veilleur",
+  "category": "invented",
+  "reaction": "HAHAHA ! Je t'ai eu !",
+  "colors": {
+    "background": "#22252d",
+    "primary": "#a7f3d0",
+    "secondary": "#fcd34d"
+  }
+}

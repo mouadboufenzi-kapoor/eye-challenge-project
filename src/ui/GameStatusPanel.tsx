@@ -1,4 +1,5 @@
 import type { GameState } from '../game/engine'
+import { CharacterView } from './CharacterView'
 
 interface GameStatusPanelProps {
   state: GameState
@@ -17,10 +18,7 @@ export function GameStatusPanel({ state, bestScore, onReset }: GameStatusPanelPr
       )}
       {state.phase === 'playing' && (
         <>
-          <div className="character" aria-label="Personnage de test">
-            <span className={`character-eye ${state.characterEyes}`} />
-            <span className={`character-eye ${state.characterEyes}`} />
-          </div>
+          <CharacterView eyes={state.characterEyes} />
           <h2>
             {state.characterEyes === 'open'
               ? 'Le personnage regarde'
@@ -32,6 +30,7 @@ export function GameStatusPanel({ state, bestScore, onReset }: GameStatusPanelPr
       )}
       {(state.phase === 'lost' || state.phase === 'won') && (
         <>
+          {state.phase === 'lost' && <CharacterView eyes="closed" reaction="laugh" />}
           <h2>{state.phase === 'won' ? 'Gagné' : 'Perdu'}</h2>
           <p className="score">Score : {Math.round(state.score)}</p>
           <p className="best-score">Meilleur score : {Math.round(bestScore)}</p>
