@@ -4,6 +4,10 @@ import type { EyeState } from './input/eyeTracker'
 import { EyeGameController } from './game/controller'
 import { GameEngine, type GameState } from './game/engine'
 import { readBestScore, saveBestScore } from './storage/bestScore'
+import { CalibrationPanel } from './ui/CalibrationPanel'
+import { DebugPanel } from './ui/DebugPanel'
+import { EyeStatusPanel } from './ui/EyeStatusPanel'
+import { GameStatusPanel } from './ui/GameStatusPanel'
 import './style.css'
 
 type Phase = 'idle' | 'starting' | 'close' | 'open' | 'ready' | 'error'
@@ -122,8 +126,6 @@ function App() {
     }, 100)
   }
 
-  const bothClosed = state.leftClosed && state.rightClosed
-  const statusText = phase === 'ready' ? (bothClosed ? 'FERMÉS' : 'OUVERTS') : ''
   const startGame = () => {
     gameControllerRef.current?.beginCalibration()
     gameControllerRef.current?.finishCalibration()
@@ -153,63 +155,14 @@ function App() {
         {phase === 'starting' && <StatusPanel>Initialisation de la caméra…</StatusPanel>}
 
         {(phase === 'close' || phase === 'open') && (
-          <div className="panel calibration">
-            <span className="step">Calibration {phase === 'close' ? '1' : '2'} / 2</span>
-            <h2>{phase === 'close' ? 'Ferme les yeux' : 'Ouvre les yeux'}</h2>
-            <strong>{remaining}</strong>
-            <p>Garde cette position pendant 2 secondes.</p>
-          </div>
+          <CalibrationPanel step={phase} remaining={remaining} />
         )}
 
         {phase === 'ready' && (
-          <div className="panel result">
-            <div className={`eye-state ${bothClosed ? 'closed' : 'open'}`}>
-              {statusText}
-            </div>
-            <p className="face">
-              <span className={state.faceDetected ? 'dot detected' : 'dot'} />
-              {state.faceDetected ? 'Visage détecté' : 'Visage non détecté'}
-            </p>
-            {!state.faceDetected && (
-              <p className="hint">Place ton visage face à la caméra et améliore la lumière.</p>
-            )}
-            {gameState.phase === 'idle' && (
-              <button onClick={startGame}>Lancer le test de jeu</button>
-            )}
-          </div>
+          <EyeStatusPanel state={state} onStartGame={startGame} />
         )}
 
-        {gameState.phase !== 'idle' && (
-          <div className="panel game-panel">
-            <span className="step">Test du moteur de jeu</span>
-            {gameState.phase === 'countdown' && (
-              <h2>Départ dans {Math.ceil(gameState.countdownRemainingMs / 1000)}</h2>
-            )}
-            {gameState.phase === 'playing' && (
-              <>
-                <h2>{gameState.characterEyes === 'open' ? 'Le personnage regarde' : 'Le personnage ferme les yeux'}</h2>
-                <p className="score">Score : {Math.round(gameState.score)}</p>
-                <p className="best-score">Meilleur score : {Math.round(bestScore)}</p>
-              </>
-            )}
-            {gameState.phase === 'lost' && (
-              <>
-                <h2>Perdu</h2>
-                <p className="score">Score : {Math.round(gameState.score)}</p>
-                <p className="best-score">Meilleur score : {Math.round(bestScore)}</p>
-                <button onClick={resetGame}>Recommencer</button>
-              </>
-            )}
-            {gameState.phase === 'won' && (
-              <>
-                <h2>Gagné</h2>
-                <p className="score">Score : {Math.round(gameState.score)}</p>
-                <p className="best-score">Meilleur score : {Math.round(bestScore)}</p>
-                <button onClick={resetGame}>Recommencer</button>
-              </>
-            )}
-          </div>
-        )}
+        <GameStatusPanel state={gameState} bestScore={bestScore} onReset={resetGame} />
 
         {phase === 'error' && (
           <div className="panel error-panel">
@@ -219,17 +172,7 @@ function App() {
           </div>
         )}
 
-        {debug && phase !== 'idle' && (
-          <details className="debug" open>
-            <summary>Debug MediaPipe</summary>
-            <dl>
-              <div><dt>eyeBlinkLeft</dt><dd>{state.leftBlink.toFixed(3)}</dd></div>
-              <div><dt>eyeBlinkRight</dt><dd>{state.rightBlink.toFixed(3)}</dd></div>
-              <div><dt>Seuil fermeture</dt><dd>{state.threshold.toFixed(3)}</dd></div>
-              <div><dt>FPS</dt><dd>{state.fps}</dd></div>
-            </dl>
-          </details>
-        )}
+        <DebugPanel state={state} visible={debug && phase !== 'idle'} />
       </section>
     </main>
   )
