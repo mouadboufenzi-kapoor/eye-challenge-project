@@ -19,6 +19,7 @@ export const strings = {
   share: 'PARTAGER',
   otherCharacter: 'AUTRE PERSONNAGE',
   score: 'Score',
+  points: 'PTS',
   shareFallback: 'Eye Challenge',
   shareText: 'J’ai testé Eye Challenge.',
 } as const

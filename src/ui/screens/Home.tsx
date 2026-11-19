@@ -35,7 +35,7 @@ export function Home({ record, selectedIndex, onSelect, onPlay }: HomeProps) {
   return (
     <main className="poster-screen home-screen" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
       <header className="poster-header">
-        <Pill tone="yellow">{strings.record} {record}</Pill>
+        <Pill tone="yellow">{strings.record} {Math.round(record)} {strings.points}</Pill>
         <Pill tone="cream">{strings.parody}</Pill>
       </header>
       <CharacterView

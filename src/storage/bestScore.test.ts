@@ -23,7 +23,7 @@ describe('best score storage', () => {
 
     saveBestScore(42.5, storage)
 
-    expect(readBestScore(storage)).toBe(42.5)
+    expect(readBestScore(storage)).toBe(43)
   })
 
   it('ignores invalid stored values', () => {

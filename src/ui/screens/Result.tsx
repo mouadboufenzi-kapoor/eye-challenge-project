@@ -30,8 +30,8 @@ export function Result({ kind, score, record, onReplay, onShare, onHome }: Resul
       <section className="result-panel">
         <h1>{lost ? strings.lost : strings.won}</h1>
         <div className="result-scores">
-          <div><span>{strings.score}</span><strong>{Math.round(score)}</strong></div>
-          <div><span>{strings.record}</span><strong>{Math.round(record)}</strong></div>
+          <div><span>{strings.score}</span><strong>{Math.round(score)} {strings.points}</strong></div>
+          <div><span>{strings.record}</span><strong>{Math.round(record)} {strings.points}</strong></div>
         </div>
         <div className="result-actions">
           <Button onClick={onReplay}>{strings.replay}</Button>
