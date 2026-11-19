@@ -17,6 +17,10 @@ Les tests du moteur de jeu se lancent avec :
 npm test
 ```
 
+Le moteur reste séparé de l'interface et de MediaPipe. `src/game/controller.ts`
+fait uniquement le lien entre un `EyeTracker` et le moteur, avec un scheduler
+injectable pour garder les tests déterministes.
+
 ## Tester sur un téléphone
 
 1. Déployer le dépôt sur **Cloudflare Pages** (build command `npm run build`, dossier de sortie `dist`) ou lancer un tunnel HTTPS vers le serveur Vite.
