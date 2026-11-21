@@ -13,4 +13,5 @@ export interface EyeTracker {
   start(): Promise<void>
   stop(): void
   onUpdate(cb: (state: EyeState) => void): void
+  preload?(): Promise<void>
 }

@@ -4,6 +4,7 @@ import {
   type FaceLandmarkerResult,
 } from '@mediapipe/tasks-vision'
 import type { EyeState, EyeTracker } from './eyeTracker'
+import { cameraErrorCode } from './cameraErrors'
 
 export interface EyeTrackerConfig {
   width: number
@@ -55,6 +56,7 @@ export class MediaPipeEyeTracker implements EyeTracker {
   private rightHistory: number[] = []
   private frameTimes: number[] = []
   private state: EyeState = EMPTY_STATE
+  private landmarkerPromise: Promise<FaceLandmarker> | null = null
 
   constructor(video: HTMLVideoElement, config: Partial<EyeTrackerConfig> = {}) {
     this.video = video
@@ -79,7 +81,7 @@ export class MediaPipeEyeTracker implements EyeTracker {
       })
     } catch (error) {
       console.error('Unable to access the camera', error)
-      throw new Error('CAMERA_DENIED')
+      throw new Error(cameraErrorCode(error))
     }
 
     this.video.srcObject = this.stream
@@ -87,8 +89,7 @@ export class MediaPipeEyeTracker implements EyeTracker {
     this.video.playsInline = true
     await this.video.play()
 
-    const vision = await FilesetResolver.forVisionTasks('/wasm')
-    this.landmarker = await this.createLandmarker(vision)
+    this.landmarker = await this.ensureLandmarker()
     this.running = true
     this.lastFrameAt = 0
     this.emit({ ...EMPTY_STATE, threshold: this.threshold })
@@ -100,7 +101,11 @@ export class MediaPipeEyeTracker implements EyeTracker {
     cancelAnimationFrame(this.animationFrame)
     this.stream?.getTracks().forEach((track) => track.stop())
     this.stream = null
-    this.landmarker?.close()
+    if (this.landmarker) {
+      this.landmarker.close()
+    } else {
+      void this.landmarkerPromise?.then((landmarker) => landmarker.close())
+    }
     this.landmarker = null
     this.video.srcObject = null
     this.leftHistory = []
@@ -108,6 +113,21 @@ export class MediaPipeEyeTracker implements EyeTracker {
     this.frameTimes = []
     this.closedFrames = { left: 0, right: 0 }
     this.openFrames = { left: 0, right: 0 }
+    this.landmarkerPromise = null
+  }
+
+  async preload(): Promise<void> {
+    await this.ensureLandmarker()
+  }
+
+  private async ensureLandmarker(): Promise<FaceLandmarker> {
+    if (this.landmarker) return this.landmarker
+    if (!this.landmarkerPromise) {
+      this.landmarkerPromise = FilesetResolver.forVisionTasks('/wasm').then((vision) =>
+        this.createLandmarker(vision),
+      )
+    }
+    return this.landmarkerPromise
   }
 
   onUpdate(cb: (state: EyeState) => void): void {

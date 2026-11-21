@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" role="img" aria-label="Le Tribun les yeux ouverts">
+  <rect width="600" height="900" fill="#3B3F44"/>
+  <ellipse cx="300" cy="430" rx="260" ry="330" fill="#22252d"/>
+  <ellipse cx="205" cy="350" rx="58" ry="54" fill="#F3E9D8"/>
+  <ellipse cx="395" cy="350" rx="58" ry="54" fill="#F3E9D8"/>
+  <circle cx="205" cy="350" r="18" fill="#1B1A1F"/>
+  <circle cx="395" cy="350" r="18" fill="#1B1A1F"/>
+  <path d="M244 520c28 18 84 18 112 0" fill="none" stroke="#F3E9D8" stroke-linecap="round" stroke-width="18"/>
+</svg>

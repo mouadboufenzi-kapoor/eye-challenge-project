@@ -23,11 +23,59 @@ injectable pour garder les tests déterministes.
 
 ## Tester sur un téléphone
 
-1. Déployer le dépôt sur **Cloudflare Pages** (build command `npm run build`, dossier de sortie `dist`) ou lancer un tunnel HTTPS vers le serveur Vite.
-2. Pour un tunnel local, lancer `npm run dev -- --host` puis utiliser un outil gratuit comme `cloudflared tunnel --url http://localhost:5173`.
-3. Ouvrir l'URL HTTPS sur l'iPhone ou Android et autoriser la caméra frontale.
+### Option recommandée : Cloudflare Pages
+
+1. Dans Cloudflare Pages, choisir **Create a project** puis connecter le dépôt GitHub.
+2. Choisir le framework **Vite**.
+3. Utiliser `npm run build` comme commande de build et `dist` comme dossier de sortie.
+4. Ouvrir l'URL HTTPS fournie par Cloudflare sur l'iPhone ou Android.
+
+### Option rapide : tunnel local
+
+1. Lancer `npm run dev:mobile`.
+2. Dans un second terminal, lancer `cloudflared tunnel --url http://localhost:5173`.
+3. Ouvrir l'URL HTTPS affichée par `cloudflared` sur le téléphone.
+
+Ne pas utiliser une adresse `http://192.168...` pour la caméra : les navigateurs mobiles exigent HTTPS, sauf sur `localhost`.
+
+### Checklist de test mobile
+
+- [ ] La page s'ouvre en portrait sur iPhone.
+- [ ] La page s'ouvre en portrait sur Android.
+- [ ] L'autorisation de caméra frontale apparaît.
+- [ ] La calibration fonctionne sans aperçu vidéo visible.
+- [ ] Le visage est détecté avec une lumière normale.
+- [ ] Les yeux restent stables ouverts/fermés pendant les mouvements légers.
+- [ ] Un clignement naturel ne déclenche pas immédiatement une défaite.
+- [ ] Le bouton Recommencer fonctionne après une défaite ou une victoire.
 
 Le modèle `face_landmarker.task` et les fichiers WASM sont versionnés dans `public/`, donc aucun CDN n'est requis au runtime.
+
+Le meilleur score est enregistré uniquement dans le `localStorage` du navigateur.
+
+Le prototype utilise Web Audio API pour produire un signal local dont l'intensité
+augmente avec le score. Le son démarre après un clic utilisateur, pour rester
+compatible avec les restrictions audio des navigateurs mobiles.
+
+## Architecture UI
+
+- `src/ui/theme/` : couleurs, rayons, ombres et typographies.
+- `src/ui/components/` : boutons, pastilles, popups, barre de progression et grands chiffres.
+- `src/ui/screens/` : écrans de home, règles, décompte, partie et résultat.
+- `src/ui/flow.ts` : transitions de l'interface.
+- `src/ui/animation/` : presets de grimaces et moteur d'animation.
+- `src/ui/strings.fr.ts` : textes français prêts pour une i18n future.
+- `src/characters/<id>/` : assets, métadonnées, cadrage et surcharges de personnage.
+
+## Installation sur l'écran d'accueil
+
+Le site contient un manifest et un service worker. Après l'avoir ouvert en HTTPS :
+
+- sur Android : menu du navigateur, puis **Installer l'application** ou **Ajouter à l'écran d'accueil** ;
+- sur iPhone : bouton **Partager**, puis **Sur l'écran d'accueil**.
+
+La caméra et MediaPipe restent utilisables uniquement quand le site est ouvert en
+HTTPS ou sur `localhost`.
 
 ## Seuils
 

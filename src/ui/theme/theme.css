@@ -1,0 +1,22 @@
+@import '@fontsource/anton/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/700.css';
+
+:root {
+  --color-cream: #F3E9D8;
+  --color-ink: #1B1A1F;
+  --color-red: #E23B26;
+  --color-yellow: #FFC93C;
+  --color-green: #1F9D55;
+  --color-portrait: #3B3F44;
+
+  --radius-panel: 28px;
+  --radius-button: 20px;
+
+  --spacing-touch-target: 44px;
+  --spacing-action-height: 60px;
+  --shadow-hard: 0 6px 0 rgba(27, 26, 31, 0.28);
+
+  --font-display: "Anton", Impact, sans-serif;
+  --font-text: "Inter", ui-sans-serif, system-ui, sans-serif;
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" role="img" aria-label="Le Tribun les yeux fermés">
+  <rect width="600" height="900" fill="#3B3F44"/>
+  <ellipse cx="300" cy="430" rx="260" ry="330" fill="#22252d"/>
+  <path d="M145 350c28 32 92 32 120 0" fill="none" stroke="#F3E9D8" stroke-linecap="round" stroke-width="24"/>
+  <path d="M335 350c28 32 92 32 120 0" fill="none" stroke="#F3E9D8" stroke-linecap="round" stroke-width="24"/>
+  <path d="M244 520c28 18 84 18 112 0" fill="none" stroke="#F3E9D8" stroke-linecap="round" stroke-width="18"/>
+</svg>

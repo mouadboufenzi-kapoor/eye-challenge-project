@@ -1,0 +1,98 @@
+.ui-button {
+  min-height: var(--spacing-action-height);
+  min-width: var(--spacing-touch-target);
+  border: 3px solid var(--color-ink);
+  border-radius: var(--radius-button);
+  box-shadow: var(--shadow-hard);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.ui-button-primary {
+  color: var(--color-cream);
+  background: var(--color-red);
+}
+
+.ui-button-cream {
+  color: var(--color-ink);
+  background: var(--color-cream);
+}
+
+.ui-button-ink {
+  color: var(--color-cream);
+  background: var(--color-ink);
+}
+
+.ui-progress {
+  width: 100%;
+  height: 18px;
+  overflow: hidden;
+  border: 3px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-cream);
+}
+
+.ui-progress-value {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-yellow), var(--color-red));
+  transition: width 120ms linear;
+}
+
+.ui-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--spacing-touch-target);
+  padding: 0 14px;
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+}
+
+.ui-pill-yellow { background: var(--color-yellow); }
+.ui-pill-green { color: var(--color-cream); background: var(--color-green); }
+.ui-pill-cream { background: var(--color-cream); }
+
+.ui-popup-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: start center;
+  padding: 210px 24px 20px;
+  background: rgba(27, 26, 31, 0.72);
+}
+
+.ui-popup {
+  width: min(100%, 430px);
+  padding: 24px 20px 20px;
+  border: 3px solid var(--color-ink);
+  border-radius: var(--radius-panel);
+  background: var(--color-cream);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-hard);
+  text-align: center;
+}
+
+.ui-popup-title {
+  margin: 0;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+}
+
+.ui-big-number {
+  display: grid;
+  width: 150px;
+  height: 150px;
+  place-items: center;
+  border: 6px solid var(--color-ink);
+  border-radius: 50%;
+  background: var(--color-yellow);
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: 100px;
+  line-height: 1;
+  box-shadow: var(--shadow-hard);
+}
